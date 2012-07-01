@@ -54,3 +54,15 @@ def get_rack(rack_id):
         pass
 
     return Rack(description, latitude, longitude, online, bikes, locks)
+
+
+if __name__ == "__main__":
+    print("  F   L")
+    for rack in get_racks():
+        try:
+            r = get_rack(rack)
+        except IndexError:
+            print("SKIPPED! --> ", rack)
+            continue
+
+        print("{2:3d} {3:3d}   {1} ({0})".format(rack, r.description, r.bikes, r.locks))
