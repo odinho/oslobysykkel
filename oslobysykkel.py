@@ -7,6 +7,21 @@ last_rack = 111
 
 Rack = collections.namedtuple("Rack", "description latitude longitude online bikes locks")
 
+def get_racks():
+    url = "http://smartbikeportal.clearchannel.no/public/mobapp/maq.asmx/getRacks"
+    with urllib.request.urlopen(url) as f:
+        data = f.read().decode()
+    dom = parseString(data.replace("&gt;", ">").replace("&lt;", "<"))
+
+    racks = []
+    for a in dom.firstChild.childNodes:
+        if a.nodeType != a.ELEMENT_NODE:
+            continue
+
+        racks.append(int(a.firstChild.data))
+
+    return racks
+
 def get_rack(rack_id):
     url = "http://smartbikeportal.clearchannel.no/public/mobapp/maq.asmx/getRack?id=%d" % rack_id
 
